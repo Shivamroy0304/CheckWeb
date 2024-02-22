@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN PAGE</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="details.css">
+</head>
+<body>
+    <div class="login-form">
+        <form action="" id="contactForm">
+            <h1 class="heading">Enter Your Journey details </h1>
+            <div class="input-box">
+                <input type="name" id="Username" placeholder="Enter Name" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="text" id="destination" placeholder="Enter destination" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="input-box">
+                <input type="date" id="datetime" name="datetime">
+            </div>
+            <div class="input-box">
+                <label for="time">Select time :</label>
+                <select id="time" name="Time">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <label for="TimeZone">Select TimeZone:</label>
+                <select id="TimeZone" name="TimeZone">
+                    <option value="am">am</option>
+                    <option value="pm">pm</option>
+                </select>
+            </div>
+
+            <div class="button">
+                <button type="button" id="loginButton" class="button1">Submit details</button>
+            </div>
+        </form>    
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyA0yQl7iziXWsnxVgvAI35UPo2zf_nSmzk",
+          authDomain: "cabmate-f3d95.firebaseapp.com",
+          projectId: "cabmate-f3d95",
+          storageBucket: "cabmate-f3d95.appspot.com",
+          messagingSenderId: "1003579792468",
+          appId: "1:1003579792468:web:8c86745f56b63e1a83e1c1"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        document.getElementById('loginButton').addEventListener('click', async () => {
+            const name = document.getElementById('Username').value;
+            const destination = document.getElementById('destination').value;
+            const date = document.getElementById('datetime').value;
+            const time = document.getElementById('time').value;
+            const timeZone = document.getElementById('TimeZone').value;
+        
+            const userJourneyDetails = {
+                name,
+                destination,
+                date,
+                time,
+                timeZone
+            };
+        
+            // Save user's journey details to Firebase
+            const journeyDetailsRef = ref(db, 'journeyDetails');
+            await push(journeyDetailsRef, userJourneyDetails);
+        
+            // Display success message
+            alert('Journey details successfully saved!');
+
+            window.location.href = "thankyou.html";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup-Page</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="login-form">
+        <form id="signupForm">
+            <h1 class="heading">Signup</h1>
+            <div class="input-box">
+                <input type="email" id="Username" placeholder="VIT EMAIL" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" id="PASSWORD" placeholder=" CREATE PASSWORD" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="input-box">
+                <input type="text" id="FullName" placeholder="ENTER FULLNAME" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="input-box">
+                <input type="text" id="RegNumber" placeholder="Reg. Number" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="input-box">
+                <input type="text" id="OTP" placeholder="OTP" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="button">
+                <button type="button" id="sendOTPButton" class="button1">Send OTP</button>
+                <button type="submit" id="submitSignupButton" class="button1" disabled>Signup</button>
+            </div>
+        </form>
+    </div>
+    <script type="module">
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0yQl7iziXWsnxVgvAI35UPo2zf_nSmzk",
+            authDomain: "cabmate-f3d95.firebaseapp.com",
+            projectId: "cabmate-f3d95",
+            storageBucket: "cabmate-f3d95.appspot.com",
+            messagingSenderId: "1003579792468",
+            appId: "1:1003579792468:web:8c86745f56b63e1a83e1c1"
+        };
+
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        const signupForm = document.getElementById("signupForm");
+        const sendOTPButton = document.getElementById("sendOTPButton");
+        const submitSignupButton = document.getElementById("submitSignupButton");
+
+        sendOTPButton.addEventListener("click", async function () {
+            const emailInput = document.getElementById("Username");
+            const emailValue = emailInput.value.trim();
+
+           
+            if (!emailValue.endsWith("@vitstudent.ac.in")) {
+                alert("Please enter a valid VIT student email address ending with @vitstudent.ac.in");
+                return;
+            }
+
+            try {
+               
+                await sendEmailVerification(auth.currentUser);
+
+                alert("OTP sent to your email. Please check and enter the OTP.");
+                
+                submitSignupButton.removeAttribute("disabled");
+            } catch (error) {
+                console.error("Error sending OTP:", error);
+                alert("Error sending OTP. Please try again later.");
+            }
+        });
+
+        signupForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById("Username");
+            const emailValue = emailInput.value.trim();
+
+            const password = document.getElementById("PASSWORD").value.trim();
+            const fullName = document.getElementById("FullName").value.trim();
+            const regNumber = document.getElementById("RegNumber").value.trim();
+            const otp = document.getElementById("OTP").value.trim();
+
+            // Additional validation logic for OTP, if needed
+
+            try {
+                // Create user with email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, emailValue, password);
+                const user = userCredential.user;
+
+                // Save additional user data to the database
+                const usersRef = ref(db, 'users/' + user.uid);
+                set(usersRef, {
+                    email: emailValue,
+                    fullName: fullName,
+                    regNumber: regNumber,
+                    otp: otp
+                });
+
+                alert("Signup successful!");
+                signupForm.reset(); // Reset the form after successful signup
+            } catch (error) {
+                alert("Error during signup: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

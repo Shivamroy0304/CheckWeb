@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CABMET</title>
+    <link rel="stylesheet" href="frontPage.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'></head>
+<body>
+    <div class="hero">
+        <nav>
+            <img src="images/logo.jpg" class="logo" >
+            <ul>
+                <li><a href="frontpage.html">Home</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="contactus.html">Contact Us</a></li>
+            </ul>
+            <i class='bx bx-menu-alt-right' id="menu" ></i>
+        </nav>
+
+        <div class="main">
+            <div class="left-col">
+                <div class="content">
+                    <h1>Welcome to CABMATE, <br>An Efficient way of Travelling</h1>
+                    <p>CABMATE helps you to find Partener <br> Travels in the same location at same time.</p> 
+
+                    <a href="login.html" target="_blank"><button id="login">Login</button></a>
+                    <a href="signup.html" target="_blank"><button id="signup" >Sign Up</button></a>
+                </div>
+            </div>
+            <div class="right-col">
+                <div class="slider">
+                    <img src="images/1.jpg" id="slide">
+                </div>
+                <div class="slider-content">
+                    <h1>If Travel via CAB</h1> <hr>
+                    <p>Sharing a cab isn't just about splitting the fare; it's about splitting the journey and multiplying the memories.
+                         <br> <br>Cut costs, not corners. CabMate: the smart way to travel together.
+                    </p>
+
+                    <div class="controler">
+
+                        <i class='bx bxs-left-arrow-alt' id="backBtn"></i>
+                        <div class="vertical"></div>
+                        <i class='bx bxs-right-arrow-alt' id="nextBtn"></i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var slide = document.getElementById("slide");
+        var backBtn = document.getElementById("backBtn");
+        var nextBtn = document.getElementById("nextBtn");
+
+        var slideimages = new Array(
+           "images/1.jpg",
+           "images/2.jpg",
+           "images/logo.jpg"
+        );
+
+        let i =0;
+        nextBtn.onclick= function(){
+            if(i<2){
+            slide.src = slideimages[i+1];
+            i++;
+            }
+            
+        }
+        backBtn.onclick= function(){
+            if(i>0){
+            slide.src = slideimages[i-1];
+            i--;
+            }
+            
+        }
+    </script>
+
+</body>
+</html>

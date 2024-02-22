@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN PAGE</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="loginStyle.css">
+</head>
+<body>
+    <div class="login-form">
+        <form action="" id="contactForm">
+            <h1 class="heading">LOGIN</h1>
+            <div class="input-box">
+                <input type="email" id="Username" placeholder="ENTER EMAIL" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" id="PASSWORD" placeholder="ENTER PASSWORD" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="remember-forgot">
+                <label><input type="checkbox"> Remember me</label>
+                <a href="forget.html" target="_blank">Forgot password?</a>
+            </div>
+            <div type="Submit" class="button">
+                <button type="button" id="loginButton" class="button1">Login</button>
+            </div>
+            <div class="register">
+                <p>Don't have an account? <a href="signup.html" target="_blank">Register</a></p>
+            </div>
+        </form>    
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyA0yQl7iziXWsnxVgvAI35UPo2zf_nSmzk",
+          authDomain: "cabmate-f3d95.firebaseapp.com",
+          projectId: "cabmate-f3d95",
+          storageBucket: "cabmate-f3d95.appspot.com",
+          messagingSenderId: "1003579792468",
+          appId: "1:1003579792468:web:8c86745f56b63e1a83e1c1"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        document.getElementById("loginButton").addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById("Username").value;
+            const password = document.getElementById("PASSWORD").value;
+
+            try {
+                // Authenticate the user with email and password
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+            
+                // If authentication is successful, show a success message
+                alert("Login Successful!");
+            
+                // Redirect to detail.html after alert is dismissed
+                window.location.href = "detail.html";
+            
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert("Invalid login credentials. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>
